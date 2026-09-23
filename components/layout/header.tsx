@@ -37,14 +37,20 @@ export function Header() {
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between">
           
-          {/* Left search or inventory quick jump */}
-          <div className="hidden lg:flex items-center space-x-6 w-1/3">
+          {/* Left: Estoque & Experiência */}
+          <div className="hidden lg:flex items-center space-x-7 w-1/3">
             <button
               onClick={() => scrollToSection("showroom")}
-              className="text-xs uppercase tracking-[0.25em] text-neutral-400 hover:text-accent transition-colors flex items-center space-x-2 group"
+              className="text-xs uppercase tracking-[0.22em] text-white hover:text-accent transition-colors flex items-center space-x-2 font-medium group"
             >
-              <Search className="w-3.5 h-3.5 text-accent/70 group-hover:text-accent transition-colors" strokeWidth={1.5} />
-              <span>Explorar Showroom</span>
+              <Search className="w-3.5 h-3.5 text-accent group-hover:scale-110 transition-transform" strokeWidth={1.5} />
+              <span>Estoque</span>
+            </button>
+            <button
+              onClick={() => scrollToSection("experiencia")}
+              className="text-xs uppercase tracking-[0.2em] text-neutral-400 hover:text-accent transition-colors"
+            >
+              Experiência
             </button>
           </div>
 
@@ -79,26 +85,20 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Right: Navigation & VIP Concierge Button */}
+          {/* Right: Concierge, Contato & VIP Concierge Button */}
           <div className="hidden lg:flex items-center justify-end space-x-7 w-1/3">
             <nav className="flex items-center space-x-6 text-xs uppercase tracking-[0.2em] text-neutral-400">
-              <button
-                onClick={() => scrollToSection("showroom")}
-                className="hover:text-accent transition-colors"
-              >
-                Estoque
-              </button>
-              <button
-                onClick={() => scrollToSection("experiencia")}
-                className="hover:text-accent transition-colors"
-              >
-                Experiência
-              </button>
               <button
                 onClick={() => scrollToSection("concierge")}
                 className="hover:text-accent transition-colors"
               >
                 Concierge
+              </button>
+              <button
+                onClick={() => scrollToSection("contato")}
+                className="hover:text-accent transition-colors"
+              >
+                Contato
               </button>
             </nav>
 
