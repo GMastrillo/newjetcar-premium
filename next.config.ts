@@ -1,0 +1,28 @@
+import type { NextConfig } from "next";
+import path from "path";
+
+const nextConfig: NextConfig = {
+  outputFileTracingRoot: path.join(__dirname),
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "image.webmotors.com.br",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.sitewebmotors.com.br",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "avantgarde.com.br",
+      },
+    ],
+  },
+};
+
+export default nextConfig;
