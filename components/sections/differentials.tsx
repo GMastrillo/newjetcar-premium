@@ -1,6 +1,8 @@
 "use client";
 
 import { ShieldCheck, Truck, KeyRound, Eye } from "lucide-react";
+import { SplitText } from "@/components/motion/split-text";
+import { ScrambleText } from "@/components/motion/scramble-text";
 
 export function Differentials() {
   const pillars = [
@@ -44,11 +46,15 @@ export function Differentials() {
         
         {/* Title */}
         <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
-          <span className="text-xs uppercase tracking-[0.35em] text-accent font-mono block mb-2">
-            Padrão de Excelência
-          </span>
-          <h2 className="text-3xl sm:text-5xl font-serif font-bold uppercase tracking-[0.1em] text-white">
-            Pilares NewJetCar
+          <div className="h-5 flex items-center justify-center">
+            <ScrambleText
+              text="Padrão de Excelência"
+              speed={20}
+              className="text-xs uppercase tracking-[0.35em] text-accent font-mono block"
+            />
+          </div>
+          <h2 className="text-3xl sm:text-5xl font-serif font-bold uppercase tracking-[0.1em] text-white mt-2">
+            <SplitText text="Pilares NewJetCar" mode="char" stagger={0.03} />
           </h2>
           <p className="text-neutral-400 text-xs sm:text-sm font-light mt-3 leading-relaxed">
             Uma abordagem consultiva e sob medida para quem exige o mais alto grau de sofisticação e transparência em negócios automotivos.
@@ -67,7 +73,7 @@ export function Differentials() {
                 <div>
                   <div className="flex items-center justify-between pb-6 border-b border-white/10 mb-6">
                     <span className="font-serif text-3xl font-bold text-neutral-600 group-hover:text-accent transition-colors">
-                      {pillar.number}
+                      <ScrambleText text={pillar.number} speed={35} cyclesPerChar={2} />
                     </span>
                     <Icon className="w-5 h-5 text-neutral-400 group-hover:text-white transition-colors" strokeWidth={1.5} />
                   </div>

@@ -2,8 +2,12 @@
 
 import Image from "next/image";
 import { ArrowUpRight, ShieldCheck, Gauge, Calendar } from "lucide-react";
+import { motion } from "motion/react";
 import { Vehicle } from "@/data/vehicles";
 import { formatCurrency, formatKm } from "@/lib/utils";
+import { SplitText } from "@/components/motion/split-text";
+import { ScrambleText } from "@/components/motion/scramble-text";
+import { RollingText } from "@/components/motion/rolling-text";
 
 interface ShowroomGridProps {
   vehicles: Vehicle[];
@@ -19,13 +23,15 @@ export function ShowroomGrid({ vehicles, onSelectVehicle }: ShowroomGridProps) {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-12 sm:pb-16 border-b border-white/10">
           <div>
             <div className="flex items-center space-x-2 mb-2">
-              <span className="w-2 h-2 rounded-full bg-accent" />
-              <span className="text-xs uppercase tracking-[0.35em] text-accent font-mono">
-                Curadoria de Alto Padrão
-              </span>
+              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+              <ScrambleText
+                text="Curadoria de Alto Padrão"
+                speed={20}
+                className="text-xs uppercase tracking-[0.35em] text-accent font-mono"
+              />
             </div>
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold uppercase tracking-[0.1em] text-white">
-              Showroom Exclusivo
+              <SplitText text="Showroom Exclusivo" mode="char" stagger={0.03} />
             </h2>
           </div>
 
@@ -51,9 +57,13 @@ export function ShowroomGrid({ vehicles, onSelectVehicle }: ShowroomGridProps) {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-12">
-            {vehicles.map((vehicle) => (
-              <div
+            {vehicles.map((vehicle, idx) => (
+              <motion.div
                 key={vehicle.id}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-5% 0px" }}
+                transition={{ duration: 0.5, delay: (idx % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
                 onClick={() => onSelectVehicle(vehicle)}
                 className="group relative bg-[#090909] border border-white/10 hover:border-accent/40 transition-all duration-500 flex flex-col justify-between cursor-pointer overflow-hidden shadow-lg hover:shadow-[0_10px_30px_rgba(212,175,55,0.08)]"
               >
@@ -80,8 +90,8 @@ export function ShowroomGrid({ vehicles, onSelectVehicle }: ShowroomGridProps) {
 
                   {/* Hover action badge in Gold */}
                   <div className="absolute bottom-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center space-x-1 px-3 py-1 bg-accent text-black text-[10px] uppercase tracking-widest font-bold shadow-md">
-                    <span>Ficha Técnica</span>
-                    <ArrowUpRight className="w-3 h-3" strokeWidth={2} />
+                    <RollingText text="Ficha Técnica" accentClassName="text-neutral-900" />
+                    <ArrowUpRight className="w-3 h-3 ml-1" strokeWidth={2} />
                   </div>
                 </div>
 
@@ -127,7 +137,7 @@ export function ShowroomGrid({ vehicles, onSelectVehicle }: ShowroomGridProps) {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         )}

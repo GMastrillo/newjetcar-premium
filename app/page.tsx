@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { VEHICLES, Vehicle, COMPANY_INFO } from "@/data/vehicles";
 import { HeroCinematic } from "@/components/sections/hero-cinematic";
+import { KineticTicker } from "@/components/motion/kinetic-ticker";
 import { VehicleFilter, FilterState } from "@/components/sections/vehicle-filter";
 import { ShowroomGrid } from "@/components/sections/showroom-grid";
 import { BrandExperience } from "@/components/sections/brand-experience";
@@ -106,6 +107,9 @@ export default function Home() {
         onExplore={handleExploreShowroom}
       />
 
+      {/* Kinetic Luxury Ticker Runway */}
+      <KineticTicker />
+
       {/* 02. Interactive Vehicle Filter */}
       <VehicleFilter
         vehicles={VEHICLES}
@@ -119,6 +123,20 @@ export default function Home() {
       <ShowroomGrid
         vehicles={filteredVehicles}
         onSelectVehicle={(vehicle) => setSelectedVehicle(vehicle)}
+      />
+
+      {/* Secondary Kinetic Ethos Ticker */}
+      <KineticTicker
+        items={[
+          "LAUDO CAUTELAR 100% APROVADO",
+          "BLINDAGEM NÍVEL III-A CERTIFICADA",
+          "CONSIGNAÇÃO ESTRATÉGICA DISCRETA",
+          "ENTREGA NACIONAL EM CAMINHÃO FECHADO",
+          "ATENDIMENTO PRIVATIVO EM VINHEDO",
+          "SUPERESPORTIVOS SOB ENCOMENDA",
+        ]}
+        speedSeconds={40}
+        className="bg-[#050505] border-white/5 py-3.5"
       />
 
       {/* 04. Brand Experience Narrative */}

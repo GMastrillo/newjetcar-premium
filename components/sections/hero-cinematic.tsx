@@ -3,8 +3,12 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, ShieldCheck, Zap } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import { VEHICLES, Vehicle } from "@/data/vehicles";
 import { formatCurrency, formatKm } from "@/lib/utils";
+import { SplitText } from "@/components/motion/split-text";
+import { ScrambleText } from "@/components/motion/scramble-text";
+import { RollingText } from "@/components/motion/rolling-text";
 
 interface HeroCinematicProps {
   onSelectVehicle: (vehicle: Vehicle) => void;
@@ -54,20 +58,40 @@ export function HeroCinematic({ onSelectVehicle, onExplore }: HeroCinematicProps
       {/* Main Container */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 w-full flex-1 flex flex-col justify-center">
         
-        {/* Top subtle brand badge watermark */}
-        <div className="text-center mb-2 sm:mb-4">
-          <span className="text-[10px] sm:text-xs uppercase tracking-[0.4em] text-accent/80 font-mono">
-            {currentVehicle.heroTagline || "Coleção de Elite NewJetCar"}
-          </span>
+        {/* Top subtle brand badge watermark with Scramble effect */}
+        <div className="text-center mb-2 sm:mb-4 h-6 flex items-center justify-center">
+          <ScrambleText
+            key={`tagline-${currentVehicle.id}`}
+            text={currentVehicle.heroTagline || "Coleção de Elite NewJetCar"}
+            speed={20}
+            cyclesPerChar={1}
+            triggerOnView={false}
+            className="text-[10px] sm:text-xs uppercase tracking-[0.4em] text-accent/80 font-mono"
+          />
         </div>
 
-        {/* Dynamic Vehicle Big Title */}
-        <div className="text-center space-y-1 sm:space-y-2 mb-6 sm:mb-8">
-          <div className="text-xs sm:text-sm uppercase tracking-[0.35em] text-accent font-mono font-medium">
-            {currentVehicle.brand}
+        {/* Dynamic Vehicle Big Title with SplitText Character Cascade */}
+        <div className="text-center space-y-1 sm:space-y-2 mb-6 sm:mb-8 min-h-[100px] sm:min-h-[140px] flex flex-col justify-center">
+          <div className="h-5 flex items-center justify-center">
+            <ScrambleText
+              key={`brand-${currentVehicle.id}`}
+              text={currentVehicle.brand}
+              speed={18}
+              cyclesPerChar={2}
+              triggerOnView={false}
+              className="text-xs sm:text-sm uppercase tracking-[0.35em] text-accent font-mono font-medium"
+            />
           </div>
+          
           <h1 className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-bold uppercase tracking-[0.12em] text-white">
-            {currentVehicle.model}
+            <SplitText
+              key={`model-${currentVehicle.id}`}
+              text={currentVehicle.model}
+              mode="char"
+              stagger={0.022}
+              duration={0.6}
+              triggerOnView={false}
+            />
           </h1>
         </div>
 
@@ -81,14 +105,25 @@ export function HeroCinematic({ onSelectVehicle, onExplore }: HeroCinematicProps
           {/* Subtle gold floor reflection effect */}
           <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-4/5 h-12 bg-accent/[0.05] blur-2xl rounded-full" />
 
-          <Image
-            src={currentVehicle.mainImage}
-            alt={`${currentVehicle.brand} ${currentVehicle.model}`}
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
-            className="object-contain filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.9)] transition-transform duration-700 ease-out group-hover:scale-[1.025]"
-          />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentVehicle.id}
+              initial={{ opacity: 0, scale: 0.94, filter: "blur(6px)" }}
+              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, scale: 1.04, filter: "blur(4px)" }}
+              transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+              className="relative w-full h-full"
+            >
+              <Image
+                src={currentVehicle.mainImage}
+                alt={`${currentVehicle.brand} ${currentVehicle.model}`}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
+                className="object-contain filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.9)] transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+              />
+            </motion.div>
+          </AnimatePresence>
 
           {currentVehicle.armored && (
             <div className="absolute top-2 right-4 sm:right-8 flex items-center space-x-1.5 px-3 py-1 bg-black/80 border border-accent/40 backdrop-blur-md text-[10px] uppercase tracking-widest text-accent font-mono">
@@ -98,59 +133,74 @@ export function HeroCinematic({ onSelectVehicle, onExplore }: HeroCinematicProps
           )}
         </div>
 
-        {/* Specs Highlights Strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto w-full mt-4 sm:mt-6 border-y border-white/10 py-4 sm:py-5 backdrop-blur-sm bg-black/40">
-          <div className="text-center border-r border-white/10 last:border-none">
-            <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-mono block">
-              Ano
-            </span>
-            <span className="text-sm sm:text-base font-mono font-medium text-white tracking-wider">
-              {currentVehicle.year}
-            </span>
-          </div>
+        {/* Specs Highlights Strip with dynamic micro-reveal */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`specs-${currentVehicle.id}`}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
+            className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto w-full mt-4 sm:mt-6 border-y border-white/10 py-4 sm:py-5 backdrop-blur-sm bg-black/40"
+          >
+            <div className="text-center border-r border-white/10 last:border-none">
+              <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-mono block">
+                Ano
+              </span>
+              <span className="text-sm sm:text-base font-mono font-medium text-white tracking-wider block">
+                {currentVehicle.year}
+              </span>
+            </div>
 
-          <div className="text-center sm:border-r border-white/10 last:border-none">
-            <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-mono block">
-              Quilometragem
-            </span>
-            <span className="text-sm sm:text-base font-mono font-medium text-white tracking-wider">
-              {formatKm(currentVehicle.km)}
-            </span>
-          </div>
+            <div className="text-center sm:border-r border-white/10 last:border-none">
+              <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-mono block">
+                Quilometragem
+              </span>
+              <span className="text-sm sm:text-base font-mono font-medium text-white tracking-wider block">
+                {formatKm(currentVehicle.km)}
+              </span>
+            </div>
 
-          <div className="text-center border-r border-white/10 last:border-none">
-            <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-mono block">
-              Potência
-            </span>
-            <span className="text-sm sm:text-base font-mono font-medium text-white tracking-wider flex items-center justify-center space-x-1">
-              <Zap className="w-3 h-3 text-accent" strokeWidth={1.5} />
-              <span>{currentVehicle.power}</span>
-            </span>
-          </div>
+            <div className="text-center border-r border-white/10 last:border-none">
+              <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-mono block">
+                Potência
+              </span>
+              <span className="text-sm sm:text-base font-mono font-medium text-white tracking-wider flex items-center justify-center space-x-1">
+                <Zap className="w-3 h-3 text-accent" strokeWidth={1.5} />
+                <span>{currentVehicle.power}</span>
+              </span>
+            </div>
 
-          <div className="text-center">
-            <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-mono block">
-              Investimento
-            </span>
-            <span className="text-sm sm:text-base font-mono font-bold text-accent tracking-wider">
-              {formatCurrency(currentVehicle.price)}
-            </span>
-          </div>
-        </div>
+            <div className="text-center">
+              <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-mono block">
+                Investimento
+              </span>
+              <span className="text-sm sm:text-base font-mono font-bold text-accent tracking-wider block">
+                {formatCurrency(currentVehicle.price)}
+              </span>
+            </div>
+          </motion.div>
+        </AnimatePresence>
 
-        {/* Call to action buttons */}
+        {/* Call to action buttons with RollingText */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6 sm:mt-8">
           <button
             onClick={() => onSelectVehicle(currentVehicle)}
             className="w-full sm:w-auto px-8 py-3.5 bg-accent hover:bg-accent-hover text-black text-xs uppercase tracking-[0.25em] font-bold transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.2)]"
           >
-            Ficha Técnica & Dossiê
+            <RollingText
+              text="Ficha Técnica & Dossiê"
+              accentClassName="text-neutral-900"
+            />
           </button>
           <button
             onClick={onExplore}
             className="w-full sm:w-auto px-8 py-3.5 border border-white/20 bg-white/5 hover:border-accent/50 hover:bg-accent/10 hover:text-accent text-white text-xs uppercase tracking-[0.25em] font-medium transition-all duration-300"
           >
-            Ver Todo o Estoque ({VEHICLES.length})
+            <RollingText
+              text={`Ver Todo o Estoque (${VEHICLES.length})`}
+              accentClassName="text-accent"
+            />
           </button>
         </div>
       </div>

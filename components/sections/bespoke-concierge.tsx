@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { Send, CheckCircle2 } from "lucide-react";
 import { COMPANY_INFO } from "@/data/vehicles";
+import { SplitText } from "@/components/motion/split-text";
+import { ScrambleText } from "@/components/motion/scramble-text";
+import { RollingText } from "@/components/motion/rolling-text";
 
 export function BespokeConcierge() {
   const [formData, setFormData] = useState({
@@ -27,7 +30,6 @@ export function BespokeConcierge() {
       `• Blindagem: ${formData.armoredPreference}`
     );
 
-    // Open WhatsApp
     window.open(`https://api.whatsapp.com/send?phone=${COMPANY_INFO.whatsappRaw}&text=${message}`, "_blank");
     setSubmitted(true);
   };
@@ -39,12 +41,19 @@ export function BespokeConcierge() {
         <div className="bg-gradient-to-b from-[#111111] to-[#0a0a0a] border border-accent/25 p-8 sm:p-14 shadow-2xl relative">
           
           <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
-            <span className="text-xs uppercase tracking-[0.35em] text-accent font-mono block mb-2 font-medium">
-              Bespoke Car Hunter & Encomendas
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-serif font-bold uppercase tracking-[0.1em] text-white">
-              Não encontrou o modelo <br />
-              <span className="text-gold-gradient">que estava buscando?</span>
+            <div className="h-5 flex items-center justify-center">
+              <ScrambleText
+                text="Bespoke Car Hunter & Encomendas"
+                speed={20}
+                className="text-xs uppercase tracking-[0.35em] text-accent font-mono block font-medium"
+              />
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-serif font-bold uppercase tracking-[0.1em] text-white mt-2">
+              <SplitText text="Não encontrou o modelo" mode="char" stagger={0.03} />
+              <br />
+              <span className="text-gold-gradient inline-block">
+                <SplitText text="que estava buscando?" mode="char" stagger={0.03} delay={0.2} />
+              </span>
             </h2>
             <p className="text-neutral-400 text-xs sm:text-sm font-light mt-3 leading-relaxed">
               Nossa equipe de consultoria internacional localiza exemplares raros, configurações exclusivas e superesportivos sob encomenda com laudo pericial certificado.
@@ -153,14 +162,17 @@ export function BespokeConcierge() {
                 Ao enviar seus dados, você autoriza a NewJetCar Premium a entrar em contato com ofertas exclusivas e consultoria sob medida, em conformidade com as diretrizes da LGPD.
               </div>
 
-              {/* Submit CTA in Gold */}
+              {/* Submit CTA with RollingText */}
               <div className="pt-2 flex justify-center sm:justify-end">
                 <button
                   type="submit"
-                  className="w-full sm:w-auto flex items-center justify-center space-x-3 px-10 py-3.5 bg-accent hover:bg-accent-hover text-black text-xs uppercase tracking-[0.25em] font-bold transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.25)]"
+                  className="w-full sm:w-auto flex items-center justify-center space-x-3 px-10 py-3.5 bg-accent hover:bg-accent-hover text-black text-xs uppercase tracking-[0.25em] font-bold transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.25)] group"
                 >
-                  <Send className="w-3.5 h-3.5" strokeWidth={2} />
-                  <span>Solicitar Encomenda VIP</span>
+                  <Send className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" strokeWidth={2} />
+                  <RollingText
+                    text="Solicitar Encomenda VIP"
+                    accentClassName="text-neutral-900"
+                  />
                 </button>
               </div>
             </form>

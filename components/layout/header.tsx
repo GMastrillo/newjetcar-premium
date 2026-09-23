@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Phone, Search, Menu, X, ArrowUpRight } from "lucide-react";
 import { COMPANY_INFO } from "@/data/vehicles";
+import { RollingText } from "@/components/motion/rolling-text";
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -44,13 +45,13 @@ export function Header() {
               className="text-xs uppercase tracking-[0.22em] text-white hover:text-accent transition-colors flex items-center space-x-2 font-medium group"
             >
               <Search className="w-3.5 h-3.5 text-accent group-hover:scale-110 transition-transform" strokeWidth={1.5} />
-              <span>Estoque</span>
+              <RollingText text="Estoque" accentClassName="text-accent" />
             </button>
             <button
               onClick={() => scrollToSection("experiencia")}
               className="text-xs uppercase tracking-[0.2em] text-neutral-400 hover:text-accent transition-colors"
             >
-              Experiência
+              <RollingText text="Experiência" accentClassName="text-accent" />
             </button>
           </div>
 
@@ -92,13 +93,13 @@ export function Header() {
                 onClick={() => scrollToSection("concierge")}
                 className="hover:text-accent transition-colors"
               >
-                Concierge
+                <RollingText text="Concierge" accentClassName="text-accent" />
               </button>
               <button
                 onClick={() => scrollToSection("contato")}
                 className="hover:text-accent transition-colors"
               >
-                Contato
+                <RollingText text="Contato" accentClassName="text-accent" />
               </button>
             </nav>
 
@@ -106,10 +107,10 @@ export function Header() {
               href={`https://api.whatsapp.com/send?phone=${COMPANY_INFO.whatsappRaw}&text=Olá,%20gostaria%20de%20um%20atendimento%20VIP%20na%20NewJetCar%20Premium.`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center space-x-2 px-4 py-2 border border-accent/40 bg-accent/10 hover:bg-accent hover:text-black text-accent hover:border-accent text-[11px] uppercase tracking-[0.2em] font-semibold transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.1)]"
+              className="inline-flex items-center space-x-2 px-4 py-2 border border-accent/40 bg-accent/10 hover:bg-accent hover:text-black text-accent hover:border-accent text-[11px] uppercase tracking-[0.2em] font-semibold transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.1)] group"
             >
-              <span>Atendimento VIP</span>
-              <ArrowUpRight className="w-3.5 h-3.5" strokeWidth={1.5} />
+              <RollingText text="Atendimento VIP" accentClassName="text-neutral-900" />
+              <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" strokeWidth={1.5} />
             </a>
           </div>
 
